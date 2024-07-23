@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Данные о студенте [[ ${student.name} ]] &ndash; student-manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center my-4">
+    <h2 data-th-text="${student.name}">Данные о студенте</h2>
+    <a class="btn btn-primary" data-th-href="@{ /students/list }">Вернуться к списку</a>
+    <br>
+
+    <ul>
+        <li><strong>ID</strong>: <span data-th-text="${student.id}"></span></li>
+        <li><strong>Имя</strong>: <span data-th-text="${student.name}"></span></li>
+        <li><strong>Фамилия</strong>: <span data-th-text="${student.lastName}"></span></li>
+        <li><strong>Возраст</strong>: <span data-th-text="${student.age}"></span></li>
+        <li><strong>Электронная почта</strong>: <span data-th-text="${student.email}"></span></li>
+        <li><strong>Номер телефона</strong>: <span data-th-text="${student.phoneNumber}"></span></li>
+        <li><strong>Курс</strong>: <span data-th-text="${student.courseLevel.ordinal() + 1}"></span></li>
+    </ul>
+
+    <a class="btn btn-primary" data-th-href="@{ /students/{studentId}/edit(studentId=${student.id}) }">
+        Редактировать данные о студенте
+    </a>
+    <form method="post" data-th-action="@{ /students/{studentId}/delete(studentId=${student.id}) }">
+        <button type="submit">Удалить</button>
+    </form>
+    <br>
+</div>
+</body>
+</html>
