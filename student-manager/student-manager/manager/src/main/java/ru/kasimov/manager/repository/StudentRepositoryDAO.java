@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Repository;
 import ru.kasimov.manager.entity.Student;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,85 +18,63 @@ public class StudentRepositoryDAO implements StudentRepository {
             .addAnnotatedClass(Student.class)
             .buildSessionFactory();
 
-    @Override
-    public List<Student> findAll() {
-        List<Student> students;
+    @FunctionalInterface
+    private interface SessionOperation<T> {
+        T execute(Session session);
+    }
 
+    private <T> T executeTransaction(SessionOperation<T> sessionOperation) {
         Session session = sessionFactory.getCurrentSession();
         try {
             session.beginTransaction();
-            students = session.createQuery("FROM Student", Student.class).getResultList();
+            T result = sessionOperation.execute(session);
             session.getTransaction().commit();
+
+            return result;
         } catch (HibernateException exception) {
             session.getTransaction().rollback();
             throw exception;
         }
-        return students;
+
+    }
+
+    @Override
+    public List<Student> findAll() {
+        return executeTransaction(session ->
+                session.createQuery("FROM Student", Student.class).getResultList()
+        );
     }
 
     @Override
     public Student save(Student student) {
-        Session session = sessionFactory.getCurrentSession();
-
-        try {
-            session.beginTransaction();
+        return executeTransaction(session -> {
             session.save(student);
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            session.getTransaction().rollback();
-            throw exception;
-        }
-
-        return student;
+            return student;
+        });
     }
 
     @Override
     public Student saveOrUpdate(Student student) {
-        Session session = sessionFactory.getCurrentSession();
-
-        try {
-            session.beginTransaction();
+        return executeTransaction(session -> {
             session.saveOrUpdate(student);
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            session.getTransaction().rollback();
-            throw exception;
-        }
-
-        return student;
+            return student;
+        });
     }
 
     @Override
     public Optional<Student> findById(Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Student student;
-        try {
-            session.beginTransaction();
-            student = session.get(Student.class, id);
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            session.getTransaction().rollback();
-            throw exception;
-        }
-
-        return Optional.ofNullable(student);
+        return executeTransaction(session -> Optional.ofNullable(
+                session.get(Student.class, id)
+        ));
     }
 
     @Override
     public void deleteById(Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-
-        try {
-            session.beginTransaction();
+        executeTransaction(session -> {
             Student student = session.get(Student.class, id);
-            if (student != null) {
+            if (student != null)
                 session.delete(student);
-                session.getTransaction().commit();
-            }
-        } catch (HibernateException exception) {
-            session.getTransaction().rollback();
-            throw exception;
-        }
+            return null;
+        });
     }
 }
