@@ -6,7 +6,7 @@ import ru.kasimov.manager.entity.CourseLevel;
 import ru.kasimov.manager.entity.Student;
 import ru.kasimov.manager.repository.StudentRepository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class DefaultStudentService implements StudentService {
     private final StudentRepository studentRepository;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Student> findAllStudents() {
         return this.studentRepository.findAll();
     }
@@ -33,7 +33,7 @@ public class DefaultStudentService implements StudentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Student> findStudent(Integer studentId) {
         return this.studentRepository.findById(studentId);
     }
@@ -46,20 +46,24 @@ public class DefaultStudentService implements StudentService {
 
         Optional<Student> optionalStudent = this.studentRepository.findById(studentId);
 
-        // Если студент найден, обновить его поля
         optionalStudent.ifPresentOrElse(student -> {
-            student.setName(name);
-            student.setLastName(lastName);
-            student.setAge(age);
-            student.setEmail(email);
-            student.setPhoneNumber(phoneNumber);
-            student.setCourseLevel(courseLevel);
-
-            // Сохранить или обновить студента
-            this.studentRepository.saveOrUpdate(student); // Используйте saveOrUpdate
+            updateStudentDetails(student, name, lastName,
+                                 age, email, phoneNumber, courseLevel);
+            this.studentRepository.saveOrUpdate(student);
         }, () -> {
                     throw new NoSuchElementException();
         });
+    }
+
+    private void updateStudentDetails(Student student, String name,
+                                      String lastName, Integer age, String email,
+                                      String phoneNumber, CourseLevel courseLevel) {
+        student.setName(name);
+        student.setLastName(lastName);
+        student.setAge(age);
+        student.setEmail(email);
+        student.setPhoneNumber(phoneNumber);
+        student.setCourseLevel(courseLevel);
     }
 
     @Override
