@@ -1,0 +1,4 @@
+student-manager:
+  services:
+    registry:
+      uri: http://localhost:8081
