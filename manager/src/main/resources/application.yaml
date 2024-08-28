@@ -2,3 +2,33 @@ student-manager:
   services:
     registry:
       uri: http://localhost:8081
+      registration-id: keycloak
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/manager
+    username: manager
+    password: manager
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - registry
+    locations:
+      classpath:db/migration
+    baseline-on-migrate: true
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/studentmanager
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: manager-app
+            client-secret: GD9uOcHzLnJ9jcO7K39rvIwRHEIvRixu
+            scope:
+              - openid
+              - view_registry
+              - edit_registry
+              - microprofile-jwt
