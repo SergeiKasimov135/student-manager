@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${student.name}]] &ndash; student-manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container text-center my-4">
+    
+<a data-th-href="@{/customer/students/list}">&larr; К списку студентов</a>
+    
+<h1 data-th-text="${student.name}"></h1>
+
+<form method="post" data-th-action="@{/customer/students/{studentId}/add-to-favourites(studentId=${student.id})}"
+      data-th-if="${!inFavourite}">
+    <button type="submit">Добавить в избранное</button>
+</form>
+    
+<form method="post" data-th-action="@{/customer/students/{studentId}/remove-from-favourites(studentId=${student.id})}"
+      data-th-if="${inFavourite}">
+    <button type="submit">Удалить из избранного</button>
+</form>
+    
+<h2>Отзывы</h2>
+    
+<div data-th-if="${errors}">
+    <h3></h3>
+    <ul>
+        <li data-th-each="error : ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+    
+<form method="post" data-th-action="@{/customer/students/{studentId}/create-review(studentId=${student.id})}">
+    <label><input type="radio" name="rating" value="1"> 1</label>
+    <label><input type="radio" name="rating" value="2"> 2</label>
+    <label><input type="radio" name="rating" value="3"> 3</label>
+    <label><input type="radio" name="rating" value="4"> 4</label>
+    <label><input type="radio" name="rating" value="5"> 5</label>
+    <br>
+    <label>
+        Отзыв:<br>
+        <textarea name="review"></textarea>
+    </label><br>
+    <button type="submit">Отправить характеристику</button>
+</form>
+    
+<div data-th-each="characteristic : ${characteristics}">
+    <h3>[[${characteristic.rating}]]*</h3>
+    <p data-th-text="${characteristic.characteristic}"></p>
+</div>
+    
+</div>
+
+</body>
+</html>

@@ -36,3 +36,10 @@ docker run --name student-manager-keycloak \
   quay.io/keycloak/keycloak:23.0.7 start-dev --import-realm
 ```
 
+### 4) MongoDB Запуск в Docker:
+```bash
+docker run --name feedback-db \
+  -p 27017:27017 \
+  mongo:7
+```
+
