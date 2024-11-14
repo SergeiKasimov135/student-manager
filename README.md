@@ -26,7 +26,7 @@ docker run --name registry-db \
   postgres:16
 ```
 
-### 3) KeyCloak Запуск в Docker:
+## KeyCloak Запуск в Docker:
 ```bash
 docker run --name student-manager-keycloak \
   -p 8082:8080 \
@@ -36,7 +36,7 @@ docker run --name student-manager-keycloak \
   quay.io/keycloak/keycloak:23.0.7 start-dev --import-realm
 ```
 
-### 4) MongoDB Запуск в Docker:
+## MongoDB Запуск в Docker:
 ```bash
 docker run --name feedback-db \
   -p 27017:27017 \
