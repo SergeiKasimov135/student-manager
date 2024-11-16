@@ -19,7 +19,7 @@ docker run --name manager-db \
 ```bash
 docker run --name registry-db \
   -v /<your absolute path to project>/student-manager/student-registry-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d \
-  -p 5433:5432 \
+  -p 5432:5432 \
   -e POSTGRES_DB=registry \
   -e POSTGRES_USER=registry \
   -e POSTGRES_PASSWORD=registry \
