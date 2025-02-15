@@ -13,14 +13,14 @@
     
 <h1 data-th-text="${student.name}"></h1>
 
-<form method="post" data-th-action="@{/customer/students/{studentId}/add-to-favourites(studentId=${student.id})}"
+<form method="post" data-th-action="@{ /customer/students/{studentId}/add-to-favourites(studentId=${student.id}) }"
       data-th-if="${!inFavourite}">
-    <button type="submit">Добавить в избранное</button>
+    <button type="submit">Добавить в избранные</button>
 </form>
-    
+
 <form method="post" data-th-action="@{/customer/students/{studentId}/remove-from-favourites(studentId=${student.id})}"
       data-th-if="${inFavourite}">
-    <button type="submit">Удалить из избранного</button>
+    <button type="submit">Удалить из избранных</button>
 </form>
     
 <h2>Отзывы</h2>
@@ -32,7 +32,7 @@
     </ul>
 </div>
     
-<form method="post" data-th-action="@{/customer/students/{studentId}/create-review(studentId=${student.id})}">
+<form method="post" data-th-action="@{/customer/students/{studentId}/create-characteristic(studentId=${student.id})}">
     <label><input type="radio" name="rating" value="1"> 1</label>
     <label><input type="radio" name="rating" value="2"> 2</label>
     <label><input type="radio" name="rating" value="3"> 3</label>
@@ -53,5 +53,6 @@
     
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

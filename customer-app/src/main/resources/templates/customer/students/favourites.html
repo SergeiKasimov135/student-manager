@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container text-center my-4">
-<a data-th-href="@{/customer/students/list}">Все товары</a>
+<a data-th-href="@{ /customer/students/list }">Все студенты</a>
 <h1>Избранные студенты</h1>
 <form>
   <label>Фильтр: <input type="text" name="filter" data-th-value="${filter}"> <button type="submit">Поиск</button></label>
@@ -15,11 +15,14 @@
 <ul>
   <li data-th-each="student : ${students}">
     <strong>
-      <a data-th-text="${student.name} ${student.lastName}"
+      <a data-th-text="${student.name} + ' ' + ${student.lastName}"
          data-th-href="@{/customer/students/{studentId}(studentId=${student.id})}"></a>
     </strong>
   </li>
 </ul>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
+

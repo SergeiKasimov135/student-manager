@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.Range;
 @NamedQueries(
         @NamedQuery(
                 name="Student.findAllByNameLikeIgnoringCase",
-                query = "select s from Student s where s.name ilike :filer"
+                query = "select s from Student s where s.name ilike :filter"
         )
 )
 public class Student {
