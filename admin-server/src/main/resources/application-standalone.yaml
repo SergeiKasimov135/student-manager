@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: admin-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/studentmanager
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/studentmanager
+        registration:
+          keycloak:
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics
+            client-id: admin-service
+            client-secret: FH4WYG5ShSFTXjClTy1BcR5x7yC9xTVM
+          login:
+            provider: keycloak
+            scope:
+              - metrics
+              - openid
+            client-id: admin-service
+            client-secret: FH4WYG5ShSFTXjClTy1BcR5x7yC9xTVM
+
+server:
+  port: 8085

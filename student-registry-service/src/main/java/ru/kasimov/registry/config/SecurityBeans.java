@@ -18,22 +18,20 @@ public class SecurityBeans {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/registry-api/students")
                         .hasAuthority("SCOPE_edit_registry")
-
                         .requestMatchers(HttpMethod.PATCH, "/registry-api/students/{studentId:\\d+}")
                         .hasAuthority("SCOPE_edit_registry")
-
                         .requestMatchers(HttpMethod.DELETE, "/registry-api/students/{studentId:\\d+}")
                         .hasAuthority("SCOPE_edit_registry")
-
-                        .requestMatchers(HttpMethod.GET)
-                        .hasAuthority("SCOPE_view_registry")
-
+                        .requestMatchers("/actuator/**").hasAuthority("SCOPE_metrics")
+                        .requestMatchers(HttpMethod.GET).hasAuthority("SCOPE_view_registry")
                         .anyRequest().denyAll())
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(Customizer.withDefaults()))
+                .oauth2Client(Customizer.withDefaults())
                 .build();
     }
+
 }

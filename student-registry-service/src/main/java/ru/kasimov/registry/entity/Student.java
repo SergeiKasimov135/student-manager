@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.Range;
         )
 )
 public class Student {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

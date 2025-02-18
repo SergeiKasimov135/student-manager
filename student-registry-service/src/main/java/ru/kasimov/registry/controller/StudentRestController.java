@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 @AllArgsConstructor
 @RequestMapping("registry-api/students/{studentId:\\d+}")
 public class StudentRestController {
+
     private final StudentService studentService;
 
     private final MessageSource messageSource;

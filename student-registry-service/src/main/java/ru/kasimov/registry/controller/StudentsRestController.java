@@ -18,6 +18,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("registry-api/students")
 public class StudentsRestController {
+
     private final StudentService studentService;
 
     @GetMapping

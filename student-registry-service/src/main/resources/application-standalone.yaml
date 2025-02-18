@@ -1,0 +1,59 @@
+server:
+  port: 8081
+
+spring:
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: registry-service
+          service-host-type: ip
+        url: http://localhost:8085
+  datasource:
+    url: jdbc:postgresql://localhost:5432/registry
+    username: registry
+    password: registry
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - registry
+    locations:
+      classpath:db/migration
+    baseline-on-migrate: true
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/studentmanager
+      client:
+        registration:
+          keycloak:
+            client-id: registry-service-metrics-client
+            client-secret: toc176N7Syf8UMhkBCBt4PL3j6h6rbt4
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/studentmanager
+
+logging:
+  level:
+    sql: TRACE
+    org.springframework.web: TRACE
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
